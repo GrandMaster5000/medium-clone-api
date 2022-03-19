@@ -1,16 +1,21 @@
 import { TagEntity } from '@app/tags/tag.entity';
-import { ConfigService } from '@nestjs/config';
 import { ConnectionOptions } from 'typeorm';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
-export const getOrmConfig = (configService: ConfigService): ConnectionOptions => {
-	return {
-		type: 'postgres',
-		host: configService.get('DATABASE_HOST'),
-		port: configService.get('DATABASE_PORT'),
-		username: configService.get('DATABASE_USERNAME'),
-		password: configService.get('DATABASE_PASSWORD'),
-		database: configService.get('DATABASE_NAME'),
-		entities: [TagEntity],
-		synchronize: true,
-	};
+const getOrmConfig: ConnectionOptions = {
+	type: 'postgres',
+	host: process.env.DATABASE_HOST,
+	port: +process.env.DATABASE_PORT,
+	username: process.env.DATABASE_USERNAME,
+	password: process.env.DATABASE_PASSWORD,
+	database: process.env.DATABASE_NAME,
+	entities: [TagEntity],
+	synchronize: false,
+	migrations: ['src/migrations/**/*{.ts,.js}'],
+	cli: {
+		migrationsDir: 'src/migrations',
+	},
 };
+
+export default getOrmConfig;
