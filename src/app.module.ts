@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { TagsModule } from './tags/tags.module';
+import { TagsModule } from '@app/tags/tags.module';
 
 @Module({
 	imports: [TagsModule],
