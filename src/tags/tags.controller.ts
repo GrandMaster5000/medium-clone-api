@@ -6,7 +6,7 @@ export class TagsController {
 	constructor(private readonly tagsService: TagsService) {}
 
 	@Get()
-	findAll(): string[] {
+	async findAll(): Promise<{ tags: string[] }> {
 		return this.tagsService.findAll();
 	}
 }

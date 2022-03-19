@@ -1,3 +1,4 @@
+import { TagEntity } from '@app/tags/tag.entity';
 import { ConfigService } from '@nestjs/config';
 import { ConnectionOptions } from 'typeorm';
 
@@ -9,7 +10,7 @@ export const getOrmConfig = (configService: ConfigService): ConnectionOptions =>
 		username: configService.get('DATABASE_USERNAME'),
 		password: configService.get('DATABASE_PASSWORD'),
 		database: configService.get('DATABASE_NAME'),
-		entities: [__dirname + '/**/*.entity{.ts,.js}'],
+		entities: [TagEntity],
 		synchronize: true,
 	};
 };
