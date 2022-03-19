@@ -1,9 +1,18 @@
 import { Module } from '@nestjs/common';
 import { TagsModule } from '@app/tags/tags.module';
-import { ormConfig } from '@app/config/orm.config';
+import { getOrmConfig } from '@app/configs/orm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-	imports: [TypeOrmModule.forRoot(ormConfig), TagsModule],
+	imports: [
+		ConfigModule.forRoot(),
+		TypeOrmModule.forRootAsync({
+			imports: [ConfigModule],
+			inject: [ConfigService],
+			useFactory: getOrmConfig,
+		}),
+		TagsModule,
+	],
 })
 export class AppModule {}
