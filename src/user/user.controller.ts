@@ -1,9 +1,11 @@
 import { IExpressRequest } from '@app/types/expressRequest.interface';
 import { Body, Controller, Get, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Request } from 'express';
+import { User } from './decorators/user.decorator';
 import { CreateUserDto } from './dto/createUser.dto';
 import { LoginUserDto } from './dto/loginUser.dto';
 import { IUserResponse } from './types/userResponse.interface';
+import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -25,7 +27,7 @@ export class UserController {
 	}
 
 	@Get()
-	async getUser(@Req() request: IExpressRequest): Promise<IUserResponse> {
-		return this.userService.buildUserResponse(request.user);
+	async getUser(@User() user: UserEntity): Promise<IUserResponse> {
+		return this.userService.buildUserResponse(user);
 	}
 }
