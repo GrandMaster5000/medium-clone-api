@@ -1,6 +1,7 @@
 import { TagEntity } from '@app/tags/tag.entity';
 import { ConnectionOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
+import { UserEntity } from '@app/user/user.entity';
 dotenv.config();
 
 const getOrmConfig: ConnectionOptions = {
@@ -10,7 +11,7 @@ const getOrmConfig: ConnectionOptions = {
 	username: process.env.DATABASE_USERNAME,
 	password: process.env.DATABASE_PASSWORD,
 	database: process.env.DATABASE_NAME,
-	entities: [TagEntity],
+	entities: [TagEntity, UserEntity],
 	synchronize: false,
 	migrations: ['src/migrations/**/*{.ts,.js}'],
 	cli: {
