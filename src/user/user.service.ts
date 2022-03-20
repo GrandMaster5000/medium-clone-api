@@ -33,26 +33,6 @@ export class UserService {
 		return this.userRepository.save(newUser);
 	}
 
-	generateJwt(user: UserEntity): string {
-		return sign(
-			{
-				id: user.id,
-				username: user.username,
-				email: user.email,
-			},
-			this.configService.get('JWT_SECRET'),
-		);
-	}
-
-	buildUserResponse(user: UserEntity): IUserResponse {
-		return {
-			user: {
-				...user,
-				token: this.generateJwt(user),
-			},
-		};
-	}
-
 	async loginUser(loginUser: LoginUserDto): Promise<UserEntity> {
 		const user = await this.userRepository.findOne(
 			{
@@ -73,5 +53,29 @@ export class UserService {
 		delete user.password;
 
 		return user;
+	}
+
+	async findById(id: number): Promise<UserEntity> {
+		return this.userRepository.findOne(id);
+	}
+
+	generateJwt(user: UserEntity): string {
+		return sign(
+			{
+				id: user.id,
+				username: user.username,
+				email: user.email,
+			},
+			this.configService.get('JWT_SECRET'),
+		);
+	}
+
+	buildUserResponse(user: UserEntity): IUserResponse {
+		return {
+			user: {
+				...user,
+				token: this.generateJwt(user),
+			},
+		};
 	}
 }
