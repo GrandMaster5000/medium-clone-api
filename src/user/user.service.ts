@@ -1,4 +1,4 @@
-import { HttpException, Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -6,6 +6,9 @@ import { UserEntity } from './user.entity';
 import { sign } from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { IUserResponse } from './types/userResponse.interface';
+import { LoginUserDto } from './dto/loginUser.dto';
+import { compare } from 'bcryptjs';
+import { EMAIL_ARE_TAKEN, INVALID_PASSWORD, USER_EMAIL_NOT_FOUND } from './user.constants';
 
 @Injectable()
 export class UserService {
@@ -23,7 +26,7 @@ export class UserService {
 			username: user.username,
 		});
 		if (userByEmail || userByUsername) {
-			throw new UnprocessableEntityException('Email or username are taken');
+			throw new UnprocessableEntityException(EMAIL_ARE_TAKEN);
 		}
 		const newUser = new UserEntity();
 		Object.assign(newUser, user);
@@ -48,5 +51,27 @@ export class UserService {
 				token: this.generateJwt(user),
 			},
 		};
+	}
+
+	async loginUser(loginUser: LoginUserDto): Promise<UserEntity> {
+		const user = await this.userRepository.findOne(
+			{
+				email: loginUser.email,
+			},
+			{ select: ['id', 'username', 'email', 'bio', 'image', 'password'] },
+		);
+
+		if (!user) {
+			throw new UnauthorizedException(USER_EMAIL_NOT_FOUND);
+		}
+		const isComparePass = await compare(loginUser.password, user.password);
+
+		if (!isComparePass) {
+			throw new UnauthorizedException(INVALID_PASSWORD);
+		}
+
+		delete user.password;
+
+		return user;
 	}
 }
