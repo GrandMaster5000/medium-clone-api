@@ -29,14 +29,12 @@ export class UserController {
 	}
 
 	@Post('sign-up')
-	@UsePipes(new ValidationPipe())
 	async signUp(@Body('user') createUser: CreateUserDto): Promise<IUserResponse> {
 		const user = await this.userService.createUser(createUser);
 		return this.userService.buildUserResponse(user);
 	}
 
 	@Post('sign-in')
-	@UsePipes(new ValidationPipe())
 	async signIn(@Body('user') loginUser: LoginUserDto): Promise<IUserResponse> {
 		const user = await this.userService.loginUser(loginUser);
 		return this.userService.buildUserResponse(user);

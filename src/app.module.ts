@@ -8,7 +8,13 @@ import { AuthMiddleware } from '@app/user/middlewares/auth.middleware';
 import { ArticlesModule } from './articles/articles.module';
 
 @Module({
-	imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(getOrmConfig), TagsModule, UserModule, ArticlesModule],
+	imports: [
+		ConfigModule.forRoot(),
+		TypeOrmModule.forRoot(getOrmConfig),
+		TagsModule,
+		UserModule,
+		ArticlesModule,
+	],
 })
 export class AppModule {
 	configure(consumer: MiddlewareConsumer): void {
