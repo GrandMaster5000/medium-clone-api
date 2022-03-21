@@ -2,6 +2,7 @@ import { TagEntity } from '@app/tags/tag.entity';
 import { ConnectionOptions } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { UserEntity } from '@app/user/user.entity';
+import { ArticleEntity } from '@app/articles/articles.entity';
 dotenv.config();
 
 const getOrmConfig: ConnectionOptions = {
@@ -11,7 +12,7 @@ const getOrmConfig: ConnectionOptions = {
 	username: process.env.DATABASE_USERNAME,
 	password: process.env.DATABASE_PASSWORD,
 	database: process.env.DATABASE_NAME,
-	entities: [TagEntity, UserEntity],
+	entities: [TagEntity, UserEntity, ArticleEntity],
 	synchronize: false,
 	migrations: ['src/migrations/**/*{.ts,.js}'],
 	cli: {
