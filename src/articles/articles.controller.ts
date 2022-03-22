@@ -60,4 +60,24 @@ export class ArticlesController {
 		);
 		return this.articlesService.buildArticleResponse(updatedArticle);
 	}
+
+	@Post(':slug/favorite')
+	@UseGuards(AuthGuard)
+	async favorited(
+		@User('id') currentUserId: number,
+		@Param('slug') slug: string,
+	): Promise<IArticleResponse> {
+		const article = await this.articlesService.articleFavorited(slug, currentUserId);
+		return this.articlesService.buildArticleResponse(article);
+	}
+
+	@Delete(':slug/favorite')
+	@UseGuards(AuthGuard)
+	async unFavorited(
+		@User('id') currentUserId: number,
+		@Param('slug') slug: string,
+	): Promise<IArticleResponse> {
+		const article = await this.articlesService.articleUnFavorited(slug, currentUserId);
+		return this.articlesService.buildArticleResponse(article);
+	}
 }
