@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from '@app/user/user.module';
 import { AuthMiddleware } from '@app/user/middlewares/auth.middleware';
 import { ArticlesModule } from './articles/articles.module';
+import { ProfilesModule } from './profiles/profiles.module';
 
 @Module({
 	imports: [
@@ -14,6 +15,7 @@ import { ArticlesModule } from './articles/articles.module';
 		TagsModule,
 		UserModule,
 		ArticlesModule,
+		ProfilesModule,
 	],
 })
 export class AppModule {
