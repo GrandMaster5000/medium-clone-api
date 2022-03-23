@@ -80,4 +80,13 @@ export class ArticlesController {
 		const article = await this.articlesService.articleUnFavorited(slug, currentUserId);
 		return this.articlesService.buildArticleResponse(article);
 	}
+
+	@Get('feed')
+	@UseGuards(AuthGuard)
+	async getFeed(
+		@User('id') currentUserId: number,
+		@Query() query: any,
+	): Promise<IArticlesResponse> {
+		return this.articlesService.getFeed(currentUserId, query);
+	}
 }
